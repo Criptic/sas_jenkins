@@ -42,8 +42,8 @@ dir</command>
     </hudson.tasks.BatchFile>
     <hudson.tasks.BatchFile>
       <command>echo &quot;Running SAS code&quot;&#xd;
-&quot;C:\\Program Files\\SASHome\\SASFoundation\\9.4\\Sas.exe&quot; -sysin C:\\temp\\TestCode.sas -log C:\\temp\\TestCode.log -nosplash -nologo -icon&#xd;
-type C:\\temp\\TestCode.log</command>
+&quot;C:\\Program Files\\SASHome\\SASFoundation\\9.4\\Sas.exe&quot; -sysin TestCode.sas -log TestCode.log -nosplash -nologo -icon&#xd;
+type TestCode.log</command>
     </hudson.tasks.BatchFile>
   </builders>
   <publishers/>
