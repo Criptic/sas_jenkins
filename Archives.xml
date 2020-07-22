@@ -1,2 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ROOT></ROOT>
+<?xml version="1.0" encoding="UTF-8"?><ROOT>
+<ArchInfo Date="1595403392838" Description="Version 1" Name="Test_Code" PackageName="Test_Code.spk" UserID="sasdemo@sas-aap" Version="4aeb291">
+<ContainObj>SBIP://METASERVER/User Folders/sasdemo/My Folder/010_Test_Code(Job)</ContainObj>
+</ArchInfo>
+</ROOT>
