@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'fileName', defaultValue: 'FileName', description: 'Name of your SAS file')
+    }
+    stages {
+        stage('Get Code from Repo') {
+            steps {
+                bat '''
+                git clone https://github.com/Criptic/sas_jenkins.git
+                cd sas_jenkins
+                git pull
+                dir
+                '''
+            }
+        }
+        stage('Run Code') {
+            steps {
+                bat '''
+                cd sas_jenkins
+                "C:\\Program Files\\SASHome\\SASFoundation\\9.4\\Sas.exe" -sysin %fileName%.sas -log ..\\%fileName%.log -nosplash -nologo -icon
+                '''
+            }
+        }
+        stage('Display Log') {
+            steps {
+                bat '''
+                type %fileName%.log
+                '''
+            }
+        }
+    }
+}
