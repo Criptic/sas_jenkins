@@ -1,0 +1,77 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.39">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.7.1"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.7.1">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>fileName</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>A pipline for running SAS Code</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.31.0">
+      <projectUrl>https://github.com/Criptic/sas_jenkins/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>fileName</name>
+          <description>Name of your SAS file</description>
+          <defaultValue>FileName</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.31.0">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.81">
+    <script>pipeline {
+    agent any
+    parameters {
+        string(name: &apos;fileName&apos;, defaultValue: &apos;FileName&apos;, description: &apos;Name of your SAS file&apos;)
+    }
+    stages {
+        stage(&apos;Get Code from Repo&apos;) {
+            steps {
+                bat &apos;&apos;&apos;
+                git clone https://github.com/Criptic/sas_jenkins.git
+                cd sas_jenkins
+                git pull
+                dir
+                &apos;&apos;&apos;
+            }
+        }
+        stage(&apos;Run Code&apos;) {
+            steps {
+                bat &apos;&apos;&apos;
+                cd sas_jenkins
+                &quot;C:\\Program Files\\SASHome\\SASFoundation\\9.4\\Sas.exe&quot; -sysin %fileName%.sas -log ..\\%fileName%.log -nosplash -nologo -icon
+                &apos;&apos;&apos;
+            }
+        }
+        stage(&apos;Display Log&apos;) {
+            steps {
+                bat &apos;&apos;&apos;
+                type %fileName%.log
+                &apos;&apos;&apos;
+            }
+        }
+    }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
